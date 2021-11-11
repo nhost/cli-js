@@ -126,15 +126,14 @@ function generateNhostBackendYaml(options) {
       [`minio`]: {
         container_name: "nhost_minio",
         image: "minio/minio",
-        user: "999:1001",
         restart: "always",
         volumes: ["./minio/data:/data", "./minio/config:/.minio"],
         environment: {
-          MINIO_ACCESS_KEY: "minioaccesskey123123",
-          MINIO_SECRET_KEY: "miniosecretkey123123",
+          MINIO_ROOT_USER: "nhostadmin",
+          MINIO_ROOT_PASSWORD: "nhostadmin",
         },
         entrypoint: "sh",
-        command: `-c 'mkdir -p /data/nhost && /usr/bin/minio server --address :${minio_port} /data'`,
+        command: `-c 'mkdir -p /data/nhost && /opt/bin/minio server /data --address :${minio_port}'`,
         ports: [`${minio_port}:${minio_port}`],
       },
     },
